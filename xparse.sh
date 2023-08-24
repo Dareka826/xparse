@@ -148,5 +148,6 @@ xparse_do_list_options() {
             sed 's/^\([^:]\+\):\([^:]\+\):.*$/  -\2 (\1)/'
     done
     unset IFS
+    exit 0
 }
 xparse_add_option list_options 0 xparse_do_list_options
