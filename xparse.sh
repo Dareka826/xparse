@@ -4,6 +4,8 @@
 XPARSE_DEBUG="${XPARSE_DEBUG:-0}"
 [ "${XPARSE_DEBUG}" = "1" ] && set -eu
 
+XPARSE_DEFAULTS="${XPARSE_DEFAULTS:-1}"
+
 # EXAMPLES:
 # xparse_add_option hello 0 do_hello
 #     makes an option '-hello' that takes 0 args and runs do_hello
@@ -134,20 +136,22 @@ xparse_execute_args() {
     done
 } # }}}
 
-# NOTE: Default option
-# without it, the cli interface only accepts the default separator
-xparse_do_list_delimiter() { XPARSE_SEPARATOR="${1}"; }
-xparse_add_option list_delimiter  1 xparse_do_list_delimiter
+if [ "${XPARSE_DEFAULTS}" = "1" ]; then
+    # NOTE: Default option
+    # without it, the cli interface only accepts the default separator
+    xparse_do_list_delimiter() { XPARSE_SEPARATOR="${1}"; }
+    xparse_add_option list_delimiter  1 xparse_do_list_delimiter
 
-# NOTE: Default option
-# prints all defined options
-xparse_do_list_options() {
-    IFS="${XPARSE_FS}"
-    for OPT_LINE in ${XPARSE_OPTIONS}; do
-        printf "%s" "${OPT_LINE}" | \
-            sed 's/^\([^:]\+\):\([^:]\+\):.*$/  -\2 (\1)/'
-    done
-    unset IFS
-    exit 0
-}
-xparse_add_option list_options 0 xparse_do_list_options
+    # NOTE: Default option
+    # prints all defined options
+    xparse_do_list_options() {
+        IFS="${XPARSE_FS}"
+        for OPT_LINE in ${XPARSE_OPTIONS}; do
+            printf "%s" "${OPT_LINE}" | \
+                sed 's/^\([^:]\+\):\([^:]\+\):.*$/  -\2 (\1)/'
+        done
+        unset IFS
+        exit 0
+    }
+    xparse_add_option list_options 0 xparse_do_list_options
+fi
