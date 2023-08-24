@@ -51,6 +51,9 @@ xparse_add_option() {
     local ARGS_TYPE="${2}"
     local  FUNCTION="${3}"
 
+    { ! xparse_is_option "${OPT_NAME}"; } || \
+        { printf "[E]: XParse: Option redefiniton: -%s\n" "${OPT_NAME}"; exit 1; }
+
     XPARSE_OPTIONS="${XPARSE_OPTIONS}${ARGS_TYPE}:${OPT_NAME}:${FUNCTION}${XPARSE_NL}"
 } # }}}
 
