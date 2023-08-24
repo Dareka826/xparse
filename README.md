@@ -3,7 +3,7 @@
 A shell script library for parsing and executing functions based on xorriso's argument style.
 
 ## Examples:
-```
+```sh
 xparse_add_option hello 0 do_hello
 #   makes an option '-hello' that takes 0 args and runs do_hello
 
