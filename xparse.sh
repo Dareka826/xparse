@@ -54,7 +54,7 @@ xparse_add_option() {
     local  FUNCTION="${3}"
 
     { ! xparse_is_option "${OPT_NAME}"; } || \
-        { printf "[E]: XParse: Option redefiniton: -%s\n" "${OPT_NAME}"; exit 1; }
+        { printf "[E]: XParse: Option redefiniton: -%s\n" "${OPT_NAME}" >&2; exit 1; }
 
     XPARSE_OPTIONS="${XPARSE_OPTIONS}${ARGS_TYPE}:${OPT_NAME}:${FUNCTION}${XPARSE_NL}"
 } # }}}
@@ -96,9 +96,9 @@ xparse_exec_option() {
     fi
 
     [ "${XPARSE_DEBUG}" = "1" ] && {
-        printf "[I]: "
-        printf "%s " "${FUNCTION}" ${FUNCTION_ARGS}
-        printf "\n"
+        printf "[I]: " >&2
+        printf "%s " "${FUNCTION}" ${FUNCTION_ARGS} >&2
+        printf "\n" >&2
     }
 
     "${FUNCTION}" ${FUNCTION_ARGS}
@@ -131,7 +131,7 @@ xparse_execute_args() {
         if xparse_is_option "${OPT_NAME}"; then
             xparse_exec_option "${OPT_NAME}"
         else
-            printf "[E]: Not an option!: %s\n" "${OPT_NAME}"
+            printf "[E]: Not an option!: %s\n" "${OPT_NAME}" >&2
         fi
     done
 } # }}}
