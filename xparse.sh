@@ -88,11 +88,23 @@ xparse_exec_option() {
             ARG_IDX="$((ARG_IDX + 1))"
         done
     else
+        local ARGS_TERMINATED="0"
+
         for arg in ${XPARSE_ARGS}; do
-            [ "${arg}" != "${XPARSE_SEPARATOR}" ] || { xparse_shift_args 1; break; }
+            [ "${arg}" != "${XPARSE_SEPARATOR}" ] || {
+                ARGS_TERMINATED="1"
+                xparse_shift_args 1
+                break
+            }
+
             FUNCTION_ARGS="${FUNCTION_ARGS}${arg}${XPARSE_FS}"
             xparse_shift_args 1
         done
+
+        [ "${ARGS_TERMINATED}" = "1" ] || {
+            printf "[E]: Argument list not terminated with \"%s\"!\n" "${XPARSE_SEPARATOR}" >&2
+            exit 1
+        }
     fi
 
     [ "${XPARSE_DEBUG}" = "1" ] && {
