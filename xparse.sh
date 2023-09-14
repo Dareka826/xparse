@@ -87,6 +87,12 @@ xparse_exec_option() {
             xparse_shift_args 1
             ARG_IDX="$((ARG_IDX + 1))"
         done
+
+        [ "${ARG_IDX}" -ge "${ARGS_NUM}" ] || {
+            printf "[E]: Wrong argument count! Expected %s, but got %s.\n" \
+                "${ARGS_NUM}" "${ARG_IDX}" >&2
+            exit 1
+        }
     else
         local ARGS_TERMINATED="0"
 
