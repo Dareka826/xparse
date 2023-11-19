@@ -163,6 +163,7 @@ if [ "${XPARSE_DEFAULTS}" = "1" ]; then
     # NOTE: Default option
     # prints all defined options
     xparse_do_list_options() {
+        printf "Options:\n"
         IFS="${XPARSE_FS}"
         for OPT_LINE in ${XPARSE_OPTIONS}; do
             printf "%s" "${OPT_LINE}" | \
